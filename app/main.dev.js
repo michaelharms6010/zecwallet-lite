@@ -14,6 +14,8 @@
 import { app, shell, BrowserWindow, ipcMain } from 'electron';
 import log from 'electron-log';
 import MenuBuilder from './menu';
+import url from "url";
+import path from "path";
 
 export default class AppUpdater {
   constructor() {
@@ -60,7 +62,11 @@ const createWindow = async () => {
     }
   });
 
-  mainWindow.loadURL(`file://${__dirname}/app.html`);
+  mainWindow.loadURL(url.format({
+  pathname: path.join(__dirname, 'app.html'),
+  protocol: 'file:',
+  slashes: true
+}));
 
   app.on('web-contents-created', (event, contents) => {
     contents.on('new-window', async (eventInner, navigationUrl) => {
